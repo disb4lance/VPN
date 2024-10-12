@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -11,9 +12,11 @@ using Repository;
 namespace UserManagmentService.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20241012214711_new srver")]
+    partial class newsrver
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,13 +127,13 @@ namespace UserManagmentService.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "8c181c01-f0da-47a0-a861-74f1bd209d9a",
+                            Id = "2db0c72a-20ed-4d62-b8b4-5342ddb9821f",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "530e931d-a7ec-4c1c-b00d-836e84f64014",
+                            Id = "ad11310d-9fec-43d7-8564-01a2496aa958",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
