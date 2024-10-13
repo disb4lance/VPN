@@ -15,6 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
+builder.Services.AddSingleton<IRabbitMQProducer, RabbitMQProducer>();
 
 var app = builder.Build();
 

@@ -33,13 +33,18 @@ namespace Services
             return result;
         }
 
-        public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuth)
+        public async Task<string> ValidateUser(UserForAuthenticationDto userForAuth)
         {
             _user = await _userManager.FindByNameAsync(userForAuth.UserName);
-            var result = (_user != null && await _userManager.CheckPasswordAsync(_user,
-            userForAuth.Password));
-            if (!result) { }
-            return result;
+            var result = (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuth.Password));
+
+            if (!result)
+            {
+                // Можно обработать ошибку здесь
+                throw new UnauthorizedAccessException("Неправильное имя пользователя или пароль.");
+            }
+
+                return _user.Id;
         }
 
     }

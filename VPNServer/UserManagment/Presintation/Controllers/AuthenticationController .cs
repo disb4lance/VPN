@@ -11,13 +11,13 @@ namespace Presintation.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IServiceManager _service;
-        public AuthenticationController(IServiceManager service) => _service = service;
+        private readonly IRabbitMQProducer _rabbitMQProducer;
+        public AuthenticationController(IServiceManager service, IRabbitMQProducer rabbitMQProducer) { 
+            _service = service;
+            _rabbitMQProducer = rabbitMQProducer;
+        } 
 
-        /// <summary>
-        /// Register User
-        /// </summary>
-        /// <param name="userForRegistration"></param>
-        /// <returns></returns>
+
         [HttpPost]
         //[ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
@@ -34,19 +34,14 @@ namespace Presintation.Controllers
             return StatusCode(201);
         }
 
-        /// <summary>
-        /// Authenticate User
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns>Token</returns>
+
         [HttpPost("login")]
         //[ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
         {
-            if (!await _service.AuthenticationService.ValidateUser(user))
-                return Unauthorized();
-            //var tokenDto = await _service.AuthenticationService.CreateToken(populateExp: true);
-            return Ok();
+            var rez = await _service.AuthenticationService.ValidateUser(user);
+            _rabbitMQProducer.SendMessage(rez);
+            return Ok(new { Message = "User registered successfully", UserId = rez });
         }
     }
 }
